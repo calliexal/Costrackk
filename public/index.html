@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CostTrack - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light no-print">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-calculator"></i> CostTrack
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/produk.html">Produk</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/komponen.html">Komponen</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/riwayat.html">Riwayat Pengadaan</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/kurs.html">Kurs JISDOR</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pages/hpe.html">Hitung HPE</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="mb-4">Dashboard CostTrack</h1>
+    
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-box"></i> Produk</h5>
+            <p class="card-text display-6" id="totalProduk">0</p>
+            <a href="/pages/produk.html" class="btn btn-light btn-sm">Kelola</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-gear"></i> Komponen</h5>
+            <p class="card-text display-6" id="totalKomponen">0</p>
+            <a href="/pages/komponen.html" class="btn btn-light btn-sm">Kelola</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-warning">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-clock-history"></i> Riwayat</h5>
+            <p class="card-text display-6" id="totalRiwayat">0</p>
+            <a href="/pages/riwayat.html" class="btn btn-light btn-sm">Kelola</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-currency-exchange"></i> Kurs Hari Ini</h5>
+            <p class="card-text" id="kursToday">Loading...</p>
+            <a href="/pages/kurs.html" class="btn btn-light btn-sm">Kelola</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5><i class="bi bi-info-circle"></i> Tentang CostTrack</h5>
+          </div>
+          <div class="card-body">
+            <p>CostTrack adalah sistem perhitungan Harga Perkiraan Estimasi (HPE) produk dengan integrasi kurs JISDOR dari Bank Indonesia.</p>
+            <h6>Fitur Utama:</h6>
+            <ul>
+              <li>Manajemen Produk & Bill of Material (BOM)</li>
+              <li>Manajemen Komponen</li>
+              <li>Riwayat Pengadaan dengan konversi mata uang</li>
+              <li>Integrasi Kurs JISDOR otomatis</li>
+              <li>Perhitungan HPE (Min, Max, Median, Rata-rata)</li>
+              <li>Ekspor data ke CSV</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Premium Footer -->
+  <footer class="premium-footer mt-5">
+    <div class="container">
+      <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+          <div class="footer-brand">
+            <h4><i class="bi bi-calculator-fill"></i> CostTrack</h4>
+            <p class="footer-desc">Sistem Perhitungan HPE Modern dengan Multi-Currency Support & Integrasi JISDOR</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <h6 class="footer-title">Quick Links</h6>
+          <ul class="footer-links">
+            <li><a href="/"><i class="bi bi-house-fill"></i> Dashboard</a></li>
+            <li><a href="/pages/produk.html"><i class="bi bi-box-seam"></i> Produk</a></li>
+            <li><a href="/pages/komponen.html"><i class="bi bi-gear-fill"></i> Komponen</a></li>
+            <li><a href="/pages/riwayat.html"><i class="bi bi-clock-history"></i> Riwayat</a></li>
+            <li><a href="/pages/hpe.html"><i class="bi bi-calculator"></i> Hitung HPE</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h6 class="footer-title">About Us</h6>
+          <p class="footer-desc">Dikembangkan oleh Capstone Team dengan dedikasi tinggi untuk memberikan solusi terbaik dalam perhitungan HPE.</p>
+          <a href="/pages/team.html" class="btn btn-footer-cta">
+            <i class="bi bi-people-fill"></i> Meet Capstone Team
+          </a>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center text-md-start">
+            <p class="mb-0 footer-copyright">&copy; 2025 CostTrack. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="mb-0 footer-made">Made with <i class="bi bi-heart-fill"></i> by Capstone Team</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

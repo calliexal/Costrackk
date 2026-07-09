@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kurs JISDOR - CostTrack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><i class="bi bi-calculator"></i> CostTrack</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/produk.html">Produk</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/komponen.html">Komponen</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/riwayat.html">Riwayat Pengadaan</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/pages/kurs.html">Kurs JISDOR</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/hpe.html">Hitung HPE</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1><i class="bi bi-currency-exchange"></i> Kurs JISDOR</h1>
+      <div class="btn-group" role="group">
+        <button class="btn btn-info" onclick="refreshJisdorToday()" title="Refresh JISDOR Hari Ini">
+          <i class="bi bi-arrow-clockwise"></i> Refresh JISDOR
+        </button>
+        <button class="btn btn-outline-info" onclick="getLatestJisdor()" title="Ambil JISDOR Terbaru">
+          <i class="bi bi-bank"></i> Latest
+        </button>
+        <button class="btn btn-success" onclick="showUploadModal()">
+          <i class="bi bi-upload"></i> Upload CSV
+        </button>
+        <button class="btn btn-primary" onclick="showAddModal()">
+          <i class="bi bi-plus-circle"></i> Tambah Manual
+        </button>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="alert alert-info">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <div>
+              <strong>JISDOR (Jakarta Interbank Spot Dollar Rate)</strong><br>
+              <small>Kurs referensi USD/IDR yang diterbitkan Bank Indonesia setiap hari kerja pukul 10:00 WIB. 
+              Data diambil otomatis dari API Bank Indonesia.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+            <colgroup>
+              <col style="width: 50px;">
+              <col style="width: 20%;">
+              <col style="width: 20%;">
+              <col style="width: 15%;">
+              <col style="width: 15%;">
+              <col style="width: 20%;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="text-center">NO</th>
+                <th>TANGGAL</th>
+                <th class="text-end">KURS (USD TO IDR)</th>
+                <th class="text-center">SUMBER</th>
+                <th class="text-center">UPDATE</th>
+                <th class="text-center">AKSI</th>
+              </tr>
+            </thead>
+            <tbody id="kursTableBody">
+              <!-- Data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit -->
+  <div class="modal fade" id="kursModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Tambah Kurs Manual</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="kursForm">
+            <input type="hidden" id="kursId">
+            <div class="mb-3">
+              <label for="tanggal" class="form-label">Tanggal *</label>
+              <input type="date" class="form-control" id="tanggal" required>
+            </div>
+            <div class="mb-3">
+              <label for="usdToIdr" class="form-label">Kurs USD to IDR *</label>
+              <input type="number" class="form-control" id="usdToIdr" min="0" step="0.01" placeholder="15500" required>
+              <small class="text-muted">Contoh: 15500</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" onclick="saveKurs()">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Upload CSV -->
+  <div class="modal fade" id="uploadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Data Kurs CSV</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">
+            <strong>Format:</strong> <code>tanggal,usdToIdr</code> (contoh: <code>2024-12-01,15500</code>)
+            <button class="btn btn-sm btn-outline-primary ms-2" onclick="downloadSampleCSV()">
+              <i class="bi bi-download"></i> Download Contoh
+            </button>
+          </p>
+          
+          <!-- Upload dari File -->
+          <div class="mb-4">
+            <label for="csvFile" class="form-label"><i class="bi bi-file-earmark-arrow-up"></i> Upload File CSV</label>
+            <input type="file" class="form-control" id="csvFile" accept=".csv" onchange="handleFileUpload(event)">
+            <small class="text-muted">Pilih file CSV dari komputer Anda</small>
+          </div>
+          
+          <div class="text-center mb-3">
+            <span class="badge bg-secondary">ATAU</span>
+          </div>
+          
+          <!-- Paste Manual -->
+          <div class="mb-3">
+            <label for="csvData" class="form-label"><i class="bi bi-clipboard"></i> Paste Data CSV</label>
+            <textarea class="form-control" id="csvData" rows="5" 
+              placeholder="Paste data CSV di sini...&#10;tanggal,usdToIdr&#10;2024-12-01,15500&#10;2024-12-02,15520"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-success" onclick="uploadCSV()">
+            <i class="bi bi-upload"></i> Upload CSV
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/kurs.js"></script>
+</body>
+</html>

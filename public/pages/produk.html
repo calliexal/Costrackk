@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Produk - CostTrack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><i class="bi bi-calculator"></i> CostTrack</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/pages/produk.html">Produk</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/komponen.html">Komponen</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/riwayat.html">Riwayat Pengadaan</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/kurs.html">Kurs JISDOR</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/hpe.html">Hitung HPE</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1><i class="bi bi-box"></i> Manajemen Produk</h1>
+      <button class="btn btn-primary" onclick="showAddModal()">
+        <i class="bi bi-plus-circle"></i> Tambah Produk
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+            <colgroup>
+              <col style="width: 60px;">
+              <col style="width: 25%;">
+              <col style="width: 30%;">
+              <col style="width: 150px;">
+              <col style="width: 200px;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="text-center">NO</th>
+                <th>NAMA PRODUK</th>
+                <th>DESKRIPSI</th>
+                <th class="text-center">JUMLAH KOMPONEN</th>
+                <th class="text-center">AKSI</th>
+              </tr>
+            </thead>
+            <tbody id="produkTableBody">
+              <!-- Data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit -->
+  <div class="modal fade" id="produkModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Tambah Produk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="produkForm">
+            <input type="hidden" id="produkId">
+            <div class="mb-3">
+              <label for="namaProduk" class="form-label">Nama Produk *</label>
+              <input type="text" class="form-control" id="namaProduk" required>
+            </div>
+            <div class="mb-3">
+              <label for="deskripsi" class="form-label">Deskripsi</label>
+              <textarea class="form-control" id="deskripsi" rows="2"></textarea>
+            </div>
+            
+            <hr>
+            <h6>Bill of Material (BOM)</h6>
+            <div class="mb-3">
+              <button type="button" class="btn btn-sm btn-success" onclick="addBOMItem()">
+                <i class="bi bi-plus"></i> Tambah Komponen
+              </button>
+            </div>
+            <div id="bomContainer"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" onclick="saveProduk()">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/produk.js"></script>
+</body>
+</html>

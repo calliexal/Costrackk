@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Pengadaan - CostTrack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><i class="bi bi-calculator"></i> CostTrack</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/produk.html">Produk</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/komponen.html">Komponen</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/pages/riwayat.html">Riwayat Pengadaan</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/kurs.html">Kurs JISDOR</a></li>
+          <li class="nav-item"><a class="nav-link" href="/pages/hpe.html">Hitung HPE</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1><i class="bi bi-clock-history"></i> Riwayat Pengadaan</h1>
+      <button class="btn btn-primary" onclick="showAddModal()">
+        <i class="bi bi-plus-circle"></i> Tambah Riwayat
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+            <colgroup>
+              <col style="width: 50px;">
+              <col style="width: 100px;">
+              <col style="width: 15%;">
+              <col style="width: 12%;">
+              <col style="width: 80px;">
+              <col style="width: 140px;">
+              <col style="width: 120px;">
+              <col style="width: 110px;">
+              <col style="width: 100px;">
+              <col style="width: 150px;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="text-center">NO</th>
+                <th>TANGGAL</th>
+                <th>KOMPONEN</th>
+                <th>SUPPLIER</th>
+                <th class="text-end">QTY</th>
+                <th class="text-end">HARGA SATUAN</th>
+                <th class="text-end">HARGA IDR</th>
+                <th class="text-end">HARGA USD</th>
+                <th class="text-center">NO. PO</th>
+                <th class="text-center">AKSI</th>
+              </tr>
+            </thead>
+            <tbody id="riwayatTableBody">
+              <!-- Data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit -->
+  <div class="modal fade" id="riwayatModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Tambah Riwayat Pengadaan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="riwayatForm">
+            <input type="hidden" id="riwayatId">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="komponenId" class="form-label">Komponen *</label>
+                <select class="form-select" id="komponenId" required>
+                  <option value="">Pilih Komponen</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="supplier" class="form-label">Supplier *</label>
+                <input type="text" class="form-control" id="supplier" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="tanggalPengadaan" class="form-label">Tanggal Pengadaan *</label>
+                <input type="date" class="form-control" id="tanggalPengadaan" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="noPO" class="form-label">No. PO</label>
+                <input type="text" class="form-control" id="noPO">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="quantity" class="form-label">Quantity *</label>
+                <input type="number" class="form-control" id="quantity" min="0" step="0.01" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="hargaSatuan" class="form-label">Harga Satuan *</label>
+                <input type="number" class="form-control" id="hargaSatuan" min="0" step="0.01" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="matauang" class="form-label">Mata Uang *</label>
+                <select class="form-select" id="matauang" required onchange="toggleKurs()">
+                  <option value="IDR">IDR</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+            </div>
+            <div class="row" id="kursContainer" style="display: none;">
+              <div class="col-md-12 mb-3">
+                <label for="kursJisdor" class="form-label">Kurs JISDOR (USD to IDR) *</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="kursJisdor" min="0" step="0.01" value="1">
+                  <button class="btn btn-outline-secondary" type="button" onclick="fetchKursToday()">
+                    <i class="bi bi-download"></i> Ambil Kurs Sesuai Tanggal
+                  </button>
+                </div>
+                <small class="text-muted">Kurs akan diambil otomatis sesuai tanggal pengadaan</small>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="catatan" class="form-label">Catatan</label>
+              <textarea class="form-control" id="catatan" rows="2"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" onclick="saveRiwayat()">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/riwayat.js"></script>
+</body>
+</html>
